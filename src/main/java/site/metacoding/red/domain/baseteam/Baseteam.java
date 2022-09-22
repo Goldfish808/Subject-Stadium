@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 @Getter
 @Setter
-public class BaseTeam {
+public class Baseteam {
 	private Integer id;
 	private String teamname;
 	private Timestamp createdAt;

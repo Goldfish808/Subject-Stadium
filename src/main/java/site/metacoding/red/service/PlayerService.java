@@ -5,21 +5,27 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import site.metacoding.red.domain.baseteam.Baseteam;
+import site.metacoding.red.domain.baseteam.BaseteamDao;
 import site.metacoding.red.domain.player.Player;
 import site.metacoding.red.domain.player.PlayerDao;
+import site.metacoding.red.web.dto.request.player.SaveDto;
+import site.metacoding.red.web.dto.response.player.MainDto;
 
 @RequiredArgsConstructor
 @Service
 public class PlayerService {
-	
+
 	private final PlayerDao playerDao;
-	
-	public List<Player> 목록보기() {
-		List<Player> playerList = playerDao.findAll();
-		System.out.println("실행됨?"+playerList.size());
-	
-		
+	private final BaseteamDao baseteamDao;
+
+	public List<MainDto> 목록보기() {
+		List<MainDto> playerList = playerDao.findAll();		
 		return playerList;
+	}
+
+	public void 추가하기(SaveDto saveDto) {
+		playerDao.insert(saveDto);
 	}
 
 	public Player 상세보기(Integer id, Integer principalId) {
@@ -30,11 +36,7 @@ public class PlayerService {
 	}
 
 	public void 삭제하기(Integer id) {
-		
-	}
-
-	public void 추가하기() {
-		
+		playerDao.deleteById(id);
 	}
 
 }

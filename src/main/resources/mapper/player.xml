@@ -5,7 +5,9 @@
 <mapper namespace="site.metacoding.red.domain.player.PlayerDao">
 
 	<insert id="insert">
-
+		INSERT INTO player(id, playername, position, teamId,
+		createdAt)
+		Values(player_seq.nextval, #{playername}, #{position},	#{teamId}, sysdate)
 	</insert>
 
 	<select id="findById"
@@ -13,17 +15,28 @@
 
 	</select>
 
-	<select id="findAll"
+	<select id="findByTeamId"
 		resultType="site.metacoding.red.domain.player.Player">
-		SELECT * FROM player
+
+	</select>
+
+	<select id="findAll"
+		resultType="site.metacoding.red.web.dto.response.player.MainDto">
+		SELECT ROWNUM, list.* FROM
+		(
+		SELECT p.id, playername, position, teamname, stadiumname, p.teamId FROM baseteam t
+		INNER JOIN stadium s ON s.teamId = t.id
+		INNER JOIN player p ON p.teamId = t.id
+		ORDER BY t.id
+		) list
 	</select>
 
 	<update id="update">
 
 	</update>
 
-	<delete id="delete">
-		DELETE FROM boards WHERE id = #{id}
+	<delete id="deleteById">
+		DELETE FROM player WHERE id = #{id}
 	</delete>
 
 </mapper>

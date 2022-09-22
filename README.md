@@ -3,6 +3,19 @@
 - 각각의 필드에서 Insert / Delete 
 
 
+### 팀 별로 ORDER BY 하고, ROWNUM 으로 번호순차적으로
+```sql
+SELECT ROWNUM, p.* FROM (SELECT * FROM player ORDER BY teamId) p;
+
+SELECT ROWNUM, list.* FROM
+(
+SELECT playername, position, teamname, stadiumname FROM baseteam t
+INNER JOIN stadium s ON s.teamId = t.id
+INNER JOIN player p ON p.teamId = t.id
+ORDER BY t.id
+) list;
+```
+
 ### 테이블 생성
 ```sql
 create table stadium(

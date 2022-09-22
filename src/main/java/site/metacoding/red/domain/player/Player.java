@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 public class Player {
 	private Integer id;
+	private Integer ROWNUM;
 	private String playername;
 	private String position;
 	private Integer teamId;
