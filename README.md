@@ -14,6 +14,19 @@ MAX(decode(day, '금',num_day)) 금,
 MAX(decode(day, '토',num_day)) 토
 FROM CAL
 GROUP BY week;
+
+
+SELECT * 
+FROM 
+(
+SELECT 
+p.position,
+decode(p.teamId, 1,p.playername) 롯데,
+decode(p.teamId, 2,p.playername) 삼성,
+decode(p.teamId, 3,p.playername) SK
+FROM
+baseteam t INNER JOIN player p ON t.id = p.teamId
+);
 ```
 
 ### 팀 별로 ORDER BY 하고, ROWNUM 으로 번호순차적으로
