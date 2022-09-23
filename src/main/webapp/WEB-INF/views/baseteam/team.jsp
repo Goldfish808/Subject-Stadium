@@ -13,7 +13,6 @@
 				<th>포지션</th>
 				<th>구단</th>
 				<th>홈</th>
-				<th>삭제</th>
 			</tr>
 		</thead>
 		
@@ -25,7 +24,6 @@
 					<td>${player.position}</td>
 					<td><a href="/baseteam/${player.teamId}">${player.teamname}</a></td>
 					<td>${player.stadiumname} </td>
-					<td><input id="teamCheck" class="form-check-input" type="checkbox" value="${player.id}">${player.id}</td>
 				</tr>
 			</c:forEach>
 		</tbody>

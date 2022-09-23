@@ -19,8 +19,8 @@ public class PlayerService {
 	private final PlayerDao playerDao;
 	private final BaseteamDao baseteamDao;
 
-	public List<MainDto> 목록보기() {
-		List<MainDto> playerList = playerDao.findAll();		
+	public List<MainDto> 목록보기(Integer id) {
+		List<MainDto> playerList = playerDao.findByTeamId(id);		
 		return playerList;
 	}
 

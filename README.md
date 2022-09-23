@@ -2,6 +2,19 @@
 
 - 각각의 필드에서 Insert / Delete 
 
+### 피벗 테이블 만들기
+```sql
+SELECT
+MAX(decode(day, '일',num_day)) 일,  
+MAX(decode(day, '월',num_day)) 월, 
+MAX(decode(day, '화',num_day)) 화, 
+MAX(decode(day, '수',num_day)) 수, 
+MAX(decode(day, '목',num_day)) 목, 
+MAX(decode(day, '금',num_day)) 금, 
+MAX(decode(day, '토',num_day)) 토
+FROM CAL
+GROUP BY week;
+```
 
 ### 팀 별로 ORDER BY 하고, ROWNUM 으로 번호순차적으로
 ```sql

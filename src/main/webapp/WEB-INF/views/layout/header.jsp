@@ -29,8 +29,8 @@
 				<ul class="navbar-nav">
 
 					<li class="nav-item"><a class="nav-link" href="/">선수</a></li>
-					<li class="nav-item"><a class="nav-link" href="/loginForm">경기장</a></li>
-					<li class="nav-item"><a class="nav-link" href="/logout">구단</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">경기장</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">구단</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">퇴출</a></li>
 
 				</ul>

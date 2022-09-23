@@ -14,7 +14,7 @@
 					<!-- 					<option value=1 >롯데</option> -->
 					<!-- 					<option value=2>삼성</option> -->
 					<!-- 					<option value=3>SK</option> -->
-					<c:forEach var="teamList" items="${teamList}">
+					<c:forEach var="teamList" items="${teamList}"><!-- 구단 갯수만큼만 반복하기 위해서 하나 Model 하나 더 했음 -->
 						<option value="${teamList.id}">${teamList.teamname}</option>
 					</c:forEach>
 				</select> <br>
@@ -24,16 +24,17 @@
 	</div>
 
 
-	<label for="sel1" class="form-label">구단 선택:</label> <select class="form-select form-select-lg"
-		id="sel1" name="sellist1">
+	<label for="sel1" class="form-label">구단 선택:</label> 
+	<select class="form-select form-select-lg" id="teamSelect" name="sellist1">
+		<option value=0>전체보기</option>
 		<c:forEach var="teamList" items="${teamList}">
-			<option id="teamSelect">${teamList.teamname}</option>
+			<option value="${teamList.id}" >${teamList.teamname}</option>
 		</c:forEach>
 	</select> <br>
-
-	<form>
+	<form id="teamListContent">
+	
 		<table class="table table-striped">
-			<thead>
+			<thead id="nextTbody">
 				<tr>
 					<th>번호</th>
 					<th>선수이름</th>
@@ -44,12 +45,12 @@
 				</tr>
 			</thead>
 
-			<tbody>
+			<tbody id="teamSelectList">
 				<c:forEach var="player" items="${player}">
 					<tr>
 						<td>${player.ROWNUM}</td>
 						<td>${player.playername}</td>
-						<td>${player.position}</td>
+						<td >${player.position}</td>
 						<td><a href="/baseteam/${player.teamId}">${player.teamname}</a></td>
 						<td>${player.stadiumname}</td>
 						<td><input id="teamCheck" class="form-check-input" type="checkbox" value="${player.id}"></td>
@@ -64,29 +65,60 @@
 </div>
 
 <script>
+$("#teamSelect").change(()=>{ //셀렉트가 변경됐을 때의 리스너, (셀렉트 선택)
+	sortView();
+});
+function sortView(){
+	let teamId = $("#teamSelect option:selected").val();
+	
+	$.ajax("/find/"+teamId,{
+		type: "GET",
+		dataType: "json"
+	}).done((res)=>{
+		$("#teamSelectList").empty();
+		for( i in res.data){
+			console.log(res.data[i].teamId);	
+			let q = $(
+					'<tr><td>'+res.data[i].rownum+'</td>'+
+					'<td>'+res.data[i].playername+'</td>'+
+					'<td >'+res.data[i].position+'</td>'+
+					'<td><a href="/baseteam/"'+res.data[i].teamId+'>'+res.data[i].teamname+'</a></td>' +
+					'<td>'+res.data[i].stadiumname+'</td>' +
+					'<td><input id="teamCheck" class="form-check-input" type="checkbox" value='+res.data[i].id+'></td></tr>'
+			);
+			$("#teamSelectList").append(q);
+		}
+
+	});
+}
 
 $("#btnDelete").click(()=>{
-	let chkDelete = [];
-	$("#teamCheck:checked").each(function(){
-		chkDelete.push($(this).val());
-	});
-	alert(chkDelete);
-	$.ajax("/deletePlayer", {
-		type: "DELETE",
-		dataType: "json", // 응답 데이터
-		data: JSON.stringify(chkDelete), // http body에 들고갈 요청 데이터
-		headers: { // http header에 들고갈 요청 데이터
-			"Content-Type": "application/json; charset=utf-8"
-		}
-	}).done((res) => {
-		if (res.code == 1) {
-			location.href = "/";
-		} else {
-			alert("삭제 실패, 아이디 패스워드를 확인해주세요");
-		}
-	});
-	
+	playerDelete();
 });
+	function playerDelete(){
+		let chkDelete = [];
+		$("#teamCheck:checked").each(function(){
+			chkDelete.push($(this).val());
+		});
+		alert(chkDelete);
+		$.ajax("/deletePlayer", {
+			type: "DELETE",
+			dataType: "json", // 응답 데이터
+			data: JSON.stringify(chkDelete), // http body에 들고갈 요청 데이터
+			headers: { // http header에 들고갈 요청 데이터
+				"Content-Type": "application/json; charset=utf-8"
+			}
+		}).done((res) => {
+			if (res.code == 1) {
+				location.href = "/";
+			} else {
+				alert("삭제 실패, 아이디 패스워드를 확인해주세요");
+			}
+		});
+		
+	}
+	
+	
 	
 	$("#btnAdd").click(() => {
 		add();
